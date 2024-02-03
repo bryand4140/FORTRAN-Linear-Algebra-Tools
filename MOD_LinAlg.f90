@@ -1,6 +1,9 @@
 module MOD_LinAlg
     implicit none
 
+    ! Define the precision of the real numbers
+    integer, parameter :: pv = selected_real_kind(15, 307)
+    
 
 contains
 !---------------------------------------------------------------------------------------------------
@@ -20,15 +23,30 @@ subroutine LSE_Solve(A, B, N, status)
     real(pv), dimension(N),   intent(inout) :: B !Coefficient Matrix
     integer, intent(out) :: status !0 for sucessful solve, 1 = matrix could not be inverted.
 
-    call Invert_Matrix(A, N, status)
-    if (status == 0) then
-        B = matmul(A, B)
+    !Check to make sure declaried size is equal to size of matrix:
+    if (SIZE(A, 1) /= N .OR. SIZE(A, 2) /= N) then
+        print*, "Error: The declared size of the matrix does not match the size of the matrix."
+        status = 1
+        return
+    else
+        call Invert_Matrix(A, N, status)
+        if (status == 0) then
+            B = matmul(A, B)
+        end if
     end if
 end subroutine LSE_Solve
 
 
 subroutine Invert_Matrix(A, n, status)
     !Inverts a square nxn matrix A
+    !Inputs:
+    !   A: The square matrix to be inverted
+    !   n: The size of the square matrix
+    !Outputs:
+    !   A: The inverted matrix
+    !   status: 0 for successful inversion, 1 for an unsuccessful inversion.
+
+
     !Checked for accuracy on 9-18-2023
     implicit none
     integer, intent(in) :: n !The size of the square nxn matrix
@@ -173,7 +191,8 @@ end subroutine Matrix_Det
 
 
 subroutine LU_Decomposition(A, n, swaps, status)
-    !Performs LU Decomp on an nxn matrix. Checked for accuracy on 9-18-2023
+    !Performs LU Decomp with partial pivoting on an nxn matrix. 
+    !Checked for accuracy on 9-18-2023
 
     implicit none
     integer, intent(in) :: n !Size of matrix A
@@ -258,6 +277,51 @@ subroutine Create_Identity_Matrix(n, Identity)
     end do
 
 end subroutine Create_Identity_Matrix
+
+!---------------------------------------------------------------------------------------------------
+!                              ** PRINTING TOOLS**
+
+SUBROUTINE print_real_vector(A)
+    ! This subroutine prints a one-dimensional array of real numbers
+    IMPLICIT NONE
+
+    ! Declare A as a one-dimensional array of unknown size
+    REAL(pv), INTENT(IN) :: A(:)
+    INTEGER :: i, N
+
+    ! Determine the size of the array A
+    N = SIZE(A)
+
+    ! Loop over the array and print each element
+    DO i = 1, N
+        WRITE(*, '(F0.4)') A(i)
+    END DO
+
+END SUBROUTINE print_real_vector
+
+
+SUBROUTINE print_integer_vector(A)
+    INTEGER, INTENT(IN) :: A(:)
+    INTEGER :: i
+    DO i = 1, SIZE(A)
+        WRITE(*, '(I0)') A(i)
+    END DO
+END SUBROUTINE print_integer_vector
+
+
+SUBROUTINE print_real_matrix(matrix)
+  REAL(pv), INTENT(IN) :: matrix(:,:)
+  INTEGER :: i, j
+
+  DO i = 1, SIZE(matrix, 1)
+    DO j = 1, SIZE(matrix, 2)
+      WRITE(*, '(F8.4, " ")', ADVANCE='NO') matrix(i,j)
+    END DO
+    WRITE(*, *) ! newline
+  END DO
+END SUBROUTINE print_real_matrix
+
+
 
 
 
