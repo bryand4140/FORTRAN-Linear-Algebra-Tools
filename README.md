@@ -1,1 +1,1 @@
-Put read me here.
+A basic library of linear algebra tools for use in Modern Fortran. 
