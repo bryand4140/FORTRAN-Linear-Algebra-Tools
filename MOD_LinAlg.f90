@@ -269,11 +269,11 @@ subroutine Create_Identity_Matrix(n, Identity)
     integer :: i
 
     ! Initialize all elements to zero
-    I = 0.0_8
+    Identity = 0.0d0
 
     ! Set the diagonal elements to one
     do i = 1, n
-        Identity(i, i) = 1.0_8
+        Identity(i, i) = 1.0d0
     end do
 
 end subroutine Create_Identity_Matrix
