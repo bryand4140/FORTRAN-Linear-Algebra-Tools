@@ -1,9 +1,11 @@
 # FORTRAN Linear Algebra Tools
 
-This repository contains a collection of Modern Fortran subroutines for performing various linear algebra operations. The code is intended to offer a robust alternative to LAPACK, and other older repositories while still offers the same level of performance but in a way that is much easier to use and understand. 
+This repository contains a collection of Modern Fortran subroutines for performing various linear algebra operations. The code is intended to offer a robust alternative to LAPACK (and other older repositories) while still offering the same level of performance but in a way that is much easier to use and understand. 
+
+The MOD_LinAlg Modules contains all subroutines in the repository. An example file is also provided which shows how to use all the main features. 
 
 ## Features
-Subroutines Overview
+Subroutines Overview:
 - **Linear Equation Solving**: Solve systems of linear equations using the subroutine `LSE_Solve`.
 - **Matrix Inversion**: Invert square matrices with `Invert_Matrix`.
 - **Determinant Calculation**: Compute the determinant of square matrices using `Matrix_Det`.
