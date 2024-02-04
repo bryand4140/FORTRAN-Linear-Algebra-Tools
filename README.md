@@ -19,8 +19,8 @@ Subroutines Overview:
 - **Symmetry Checking**: Check if a matrix is symmetric with `Is_Symmetric`.
 - **Element Summation**: Sum all elements in a matrix using `Matrix_Total_Sum`.
 - **QR_Decomposition**: Performs a QR decomposition of a matrix using the Gram-Schmidt process.
--**Diagonal Element Extraction**: Extracts the diagonal elements of a square matrix.
--**Calculation of Real Eigenvalues**: Finds the real eigenvalues of a square matrix.
+- **Diagonal Element Extraction**: Extracts the diagonal elements of a square matrix.
+- **Calculation of Real Eigenvalues**: Finds the real eigenvalues of a square matrix.
 
 ## How to Use
 Clone the repository to your local machine.
