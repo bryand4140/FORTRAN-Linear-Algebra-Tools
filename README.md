@@ -18,7 +18,7 @@ Subroutines Overview:
 - **RREF and Matrix Rank**: Calculate the reduced row echelon form and determine the rank of matrices with `RREF` and `MatrixRank`.
 - **Symmetry Checking**: Check if a matrix is symmetric with `Is_Symmetric`.
 - **Element Summation**: Sum all elements in a matrix using `Matrix_Total_Sum`.
-- **QR_Decomposition**: Performs a QR decomposition of a matrix using the Gram-Schmidt process using 'QR_Decomposition'
+- **QR_Decomposition**: Performs a QR decomposition of a matrix using the Gram-Schmidt process.
 -**Diagonal Element Extraction**: Extracts the diagonal elements of a square matrix.
 -**Calculation of Real Eigenvalues**: Finds the real eigenvalues of a square matrix.
 
