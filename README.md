@@ -5,7 +5,8 @@ This repository contains a collection of Modern Fortran subroutines for performi
 The MOD_LinAlg Modules contains all subroutines in the repository. An example file is also provided which shows how to use all the main features. 
 
 ## Upcoming Features
-- **Subroutines for determining Eigenvalues and Eigenvectors of nxn matricies** 
+- **Subroutines for determining the Eigenvectors of nxn matricies** 
+- **Subroutines for calculating complex Eigenvalues of nxn matricies**
 
 ## Current Features
 Subroutines Overview:
@@ -17,6 +18,9 @@ Subroutines Overview:
 - **RREF and Matrix Rank**: Calculate the reduced row echelon form and determine the rank of matrices with `RREF` and `MatrixRank`.
 - **Symmetry Checking**: Check if a matrix is symmetric with `Is_Symmetric`.
 - **Element Summation**: Sum all elements in a matrix using `Matrix_Total_Sum`.
+- **QR_Decomposition**: Performs a QR decomposition of a matrix using the Gram-Schmidt process using 'QR_Decomposition'
+-**Diagonal Element Extraction**: Extracts the diagonal elements of a square matrix.
+-**Calculation of Real Eigenvalues**: Finds the real eigenvalues of a square matrix.
 
 ## How to Use
 Clone the repository to your local machine.
