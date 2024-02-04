@@ -1,4 +1,3 @@
-Introduction
 This repository is dedicated to a collection of Fortran subroutines for performing various linear algebra operations. These operations include solving linear systems, inverting matrices, computing determinants, decomposing matrices using LU decomposition, transposing matrices, creating identity and zero matrices, reducing matrices to row-echelon form, determining matrix rank, and checking matrix symmetry. Each subroutine is meticulously crafted and checked for accuracy, making them a valuable resource for researchers, students, and professionals in fields that require high-performance numerical computations.
 
 Subroutines Overview
