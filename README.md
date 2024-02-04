@@ -5,7 +5,7 @@ This repository contains a collection of Modern Fortran subroutines for performi
 The MOD_LinAlg Modules contains all subroutines in the repository. An example file is also provided which shows how to use all the main features. 
 
 ## Upcoming Features
-- ** Subroutines for determining Eigenvalues and Eigenvectors of nxn matricies ** 
+- **Subroutines for determining Eigenvalues and Eigenvectors of nxn matricies** 
 
 ## Current Features
 Subroutines Overview:
