@@ -1,33 +1,42 @@
 module MOD_LinAlg
     implicit none
 
-    ! Define the precision of the real numbers
+    ! Define the precision value (pv) of the real numbers
     integer, parameter :: pv = selected_real_kind(15, 307)
     
 
 contains
 !---------------------------------------------------------------------------------------------------
 !                              ** LINEAR ALGEBRA TOOLS**
-subroutine LSE_Solve(A, B, N, status)
+subroutine LSE_Solve(A, B, x, N, status)
     ! Computes the solution to a real system of linear equations AX = B, where 
-    ! A is a square nxn matrix, B is the coefficient matrix and X are the 
-    ! unknowns. The coefficient matrix is modified to store the solutions of
-    ! the system of equations. In other words, when the program ends B = X.
+    ! A is a square nxn matrix, B is the coefficient matrix and X which contains
+    ! the solution to the system of equations. The status variable is used to
+    ! indicate if the solve was successful or not. A status of 0 indicates a
+    ! successful solve, while a status of 1 indicates an unsuccessful solve.
+    
     ! Note that A must be a square matrix.
     !Inputs:
     !   A: The square matrix
     !   B: The coefficient matrix
     !   N: The size of the square matrix
     !Outputs:
-    !   B: The solution to the system of equations
+    !   x: The solution to the system of equations
+    !   status: 0 for successful solve, 1 for an unsuccessful solve.
 
     !Checked for accuracy on 9-18-2023
     
     implicit none
     integer, intent(in) :: N                    !Size of the system
-    real(pv), dimension(N,N), intent(inout) :: A !Main matrix
-    real(pv), dimension(N),   intent(inout) :: B !Coefficient Matrix
+    real(pv), dimension(N,N), intent(in) :: A   !Main matrix
+    real(pv), dimension(N),   intent(in) :: B   !Coefficient Matrix
+    real(pv), dimension(N),   intent(out) :: x  !Solution
     integer, intent(out) :: status !0 for sucessful solve, 1 = matrix could not be inverted.
+
+    !local Variables:
+    real(pv), dimension(N, N) :: A_p
+
+    
 
     !Check to make sure declaried size is equal to size of matrix:
     if (SIZE(A, 1) /= N .OR. SIZE(A, 2) /= N) then
@@ -35,9 +44,11 @@ subroutine LSE_Solve(A, B, N, status)
         status = 1
         return
     else
-        call Invert_Matrix(A, N, status)
+        !Copy A to A_p
+        A_p = A
+        call Invert_Matrix(A_p, N, status)
         if (status == 0) then
-            B = matmul(A, B)
+            x = matmul(A_p, B)
         end if
     end if
 end subroutine LSE_Solve
@@ -563,6 +574,113 @@ subroutine Flatten_Matrix_by_Column(A,Afc)
         end do
     end do
 end subroutine Flatten_Matrix_by_Column
+
+
+SUBROUTINE Extract_Diagonal(A, diag)
+    !General Description: This subroutine extracts the diagonal of a matrix A
+    !                     and stores it in the vector diag. It is assumed that
+    !                     the matrix A is square.
+    IMPLICIT NONE
+    REAL(pv), DIMENSION(:,:), INTENT(IN) :: A
+    REAL(pv), DIMENSION(:) :: diag
+    INTEGER :: i, n
+
+    n = SIZE(A, DIM=1)  ! Get the number of rows in A
+
+    DO i = 1, n
+        diag(i) = A(i,i)
+    END DO
+END SUBROUTINE Extract_Diagonal
+
+
+SUBROUTINE QR_Decomposition(A, Q, R, n, status)
+    !General Description: This subroutine performs a QR decomposition of a matrix A
+    !                     using the Gram-Schmidt process. The QR decomposition is
+    !                     a factorization of a matrix A into a product A = QR of an
+    !                     orthogonal matrix Q and an upper triangular matrix R.
+    !                     The QR decomposition is often used to solve the linear
+    !                     least squares problem, and is the basis for a particular
+    !                     eigenvalue algorithm.
+
+    !Input Parameters:
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n ! Size of the matrix A
+    REAL(pv), DIMENSION(n,n), INTENT(IN) :: A ! Matrix to be decomposed
+    REAL(pv), DIMENSION(n,n), INTENT(OUT) :: Q, R ! Q and R matrices
+
+    !Local Variables:
+    REAL(pv), DIMENSION(n) :: u, e ! Temporary vectors
+    INTEGER :: i, j ! Loop indices
+    INTEGER, INTENT(OUT) :: status ! Status of the decomposition
+
+    ! Initialize status to success
+    status = 0
+
+    ! Perform Error Checking
+    IF (SIZE(A,1) /= SIZE(A,2)) THEN
+        PRINT*, "ERROR: Matrix A must be square"
+        status = 1 ! Indicate error
+        RETURN
+    END IF
+
+    DO i = 1, n
+        u = A(:,i)
+        DO j = 1, i-1
+            R(j,i) = DOT_PRODUCT(Q(:,j), A(:,i))
+            u = u - R(j,i) * Q(:,j)
+        END DO
+        IF (NORM2(u) == 0.0_pv) THEN
+            PRINT*, "Error: Matrix is singular or nearly singular"
+            status = 2 ! Indicate error
+            RETURN
+        END IF
+        R(i,i) = NORM2(u)
+        e = u / R(i,i)
+        Q(:,i) = e
+    END DO
+END SUBROUTINE QR_Decomposition
+
+
+SUBROUTINE Find_Real_Eigenvalues(A, eigenvalues, n, maxIter, tol)
+    ! Generalized Description: This subroutine finds the real eigenvalues
+    ! of a square matrix A using the QR algorithm. The QR algorithm is an
+    ! iterative method that uses the QR decomposition to find the eigenvalues
+    ! of a matrix. The subroutine does not support complex eigenvalues.
+
+
+    IMPLICIT NONE
+    INTEGER, INTENT(IN) :: n, maxIter
+    REAL(pv), DIMENSION(n,n), INTENT(IN) :: A
+    REAL(pv), DIMENSION(n), INTENT(OUT) :: eigenvalues
+    REAL(pv), DIMENSION(n,n) :: Q, R, A_next
+    REAL(pv) :: tol
+    INTEGER :: iter, status
+    REAL(pv), DIMENSION(n) :: diag_prev, diag_curr
+    REAL(pv) :: diff
+
+    A_next = A
+
+    DO iter = 1, maxIter
+        CALL QR_Decomposition(A_next, Q, R, n, status)
+        IF (status /= 0) THEN
+            PRINT*, "QR Decomposition failed with status: ", status
+            RETURN
+        END IF
+
+        A_next = MATMUL(R, Q)
+
+        CALL Extract_Diagonal(A_next, diag_curr)
+
+        IF (iter > 1) THEN
+            diff = MAXVAL(ABS(diag_curr - diag_prev))
+            IF (diff < tol) EXIT
+        END IF
+
+        diag_prev = diag_curr
+    END DO
+
+    eigenvalues = diag_curr
+END SUBROUTINE Find_Real_Eigenvalues
 
 
 

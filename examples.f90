@@ -8,8 +8,11 @@ program examples
     real(pv) :: A(3,3), B(3,3), C(3,3), det
     real(pv) :: A_sym(3,3), A_sym_check(3,3)
     real(pv),allocatable :: Afr(:), Afc(:)
+
     real(pv) :: A1(2,2), B1(2,1)
     real(pv) :: A2(3,4), B2(3,4)
+    real(pv) :: x1(2,1)
+
     real(pv) :: sum
     integer :: n, status, rank
     logical :: result
@@ -24,6 +27,7 @@ program examples
 
     A1 = reshape((/2,7,4,8/),(/2,2/))
     B1 = reshape((/16,44/),(/2,1/))
+    
    
     A2 = reshape((/1,2,3,2,5,5,1,1,1,9,18,24/) , (/3,4/))
 
@@ -94,13 +98,15 @@ program examples
     print *, "        [44]"
     print *, "The solution is x1 = 4, and x2 = 2"; print*, " " !Spacer
 
-    call LSE_Solve(A1, B1, 2, status)
+
+        !LSE_Solve(A, B, x, N, status)
+    call LSE_Solve(A1, B1, x1, 2, status)
 
     if(status /= 0) then
         write(*,*) "Matrix is singular to working precision."
     else
         print*, "Print the solution matrix:"
-        call print_real_matrix(B1)
+        call print_real_matrix(x1)
     end if
     print*, " " !Spacer
 
