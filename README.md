@@ -1,4 +1,4 @@
-# FORTRAN Linear Algebra Tools
+![FORTRAN Linear Algebra Tools](media/logo.png)
 
 This repository contains a collection of Modern Fortran subroutines for performing various linear algebra operations. The code is intended to offer a robust alternative to LAPACK (and other older repositories) while still offering the same level of performance but in a way that is much easier to use and understand. 
 
