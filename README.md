@@ -4,7 +4,10 @@ This repository contains a collection of Modern Fortran subroutines for performi
 
 The MOD_LinAlg Modules contains all subroutines in the repository. An example file is also provided which shows how to use all the main features. 
 
-## Features
+## Upcoming Features
+- **Subroutines for determining Eigenvalues and Eigenvectors of nxn matricies** 
+
+## Current Features
 Subroutines Overview:
 - **Linear Equation Solving**: Solve systems of linear equations using the subroutine `LSE_Solve`.
 - **Matrix Inversion**: Invert square matrices with `Invert_Matrix`.
