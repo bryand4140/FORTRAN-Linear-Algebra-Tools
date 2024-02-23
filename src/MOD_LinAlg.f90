@@ -168,7 +168,7 @@ subroutine Invert_Matrix(A, n, status)
 
     ! Check the condition number
     if (cond_num > 1.0E20) then
-        print*, "Warning! Poorly Conditioned Matrix! See 'invert matrix subroutine'."
+        print*, "Warning! Matrix is poorly conditioned or near sigular."
     end if
 
 end subroutine Invert_Matrix
